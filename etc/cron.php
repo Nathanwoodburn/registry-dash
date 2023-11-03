@@ -136,6 +136,10 @@
 			$sld = sldForDomain($domain);
 			$tld = tldForDomain($domain);
 			$tldInfo = getStakedTLD($tld, true);
+			if (!$tldInfo["live"]) {
+				continue;
+			}
+
 			$type = "renew";
 			$years = 1;
 			$price = @$tldInfo["price"];
@@ -146,7 +150,12 @@
 			$description = $domain." - ".$years." year renewal";
 			$expiration = strtotime(date("c", $data["expiration"])." +".$years." years");
 
-			if ($tldInfo["owner"] !== $data["account"]) {
+			if ($tldInfo["owner"] == $data["account"]) {
+				$price = 0;
+				$total = 0;
+				$fee = 0;
+			}
+			else {
 				$userInfo = userInfo($data["account"]);
 				$customer = $GLOBALS["stripe"]->customers->retrieve($userInfo["stripe"]);
 				$paymentMethod = $customer["invoice_settings"]["default_payment_method"];
@@ -184,7 +193,7 @@
 				}
 			}
 
-			renewSLD($data, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
+			renewSLD($data, $domain, $data["account"], $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
 		}
 	}
 

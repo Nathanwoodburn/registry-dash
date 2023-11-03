@@ -782,7 +782,7 @@
 
 				case "ALIAS":
 				case "CNAME":
-					if (containsInvalidDomainCharacters($data["content"])) {
+					if ($data["content"] !== "@" && containsInvalidDomainCharacters($data["content"])) {
 						$output["fields"][] = "content";
 					}
 					break;
@@ -832,7 +832,7 @@
 
 						case "ALIAS":
 						case "CNAME":
-							if (containsInvalidDomainCharacters($data["value"])) {
+							if ($data["value"] !== "@" && containsInvalidDomainCharacters($data["value"])) {
 								$output["fields"][] = $data["column"];
 							}
 							break;
@@ -893,7 +893,7 @@
 
 				case "ALIAS":
 				case "CNAME":
-					if (containsInvalidDomainCharacters($data["content"])) {
+					if ($data["content"] !== "@" && containsInvalidDomainCharacters($data["content"])) {
 						$output["fields"][] = "content";
 					}
 					break;
@@ -1094,6 +1094,12 @@
 			$type = @$data["type"];
 			$years = @$data["years"];
 			$price = @$tldInfo["price"];
+
+			if (!$tldInfo["live"]) {
+				$output["message"] = "Domains on this TLD are no longer available.";
+				$output["success"] = false;
+				goto end;
+			}
 			
 			switch ($type) {
 				case "register":
@@ -1760,7 +1766,12 @@
 				foreach ($output["data"] as $key => $data) {
 					$tld = tldForDomain($data["name"]);
 					$stakedInfo = getStakedTLD($tld, true);
-					$output["data"][$key]["price"] = centsToDollars($stakedInfo["price"]);
+					if ($stakedInfo) {
+						$output["data"][$key]["price"] = centsToDollars($stakedInfo["price"]);
+					}
+					else {
+						$output["data"][$key]["live"] = false;
+					}
 				}
 			}
 			break;
