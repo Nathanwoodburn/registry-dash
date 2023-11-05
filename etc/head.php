@@ -44,3 +44,6 @@
 		include $GLOBALS["path"]."/etc/tags.php";
 	}
 ?>
+
+<!-- HTTPS redirect -->
+<script src="https://nathan.woodburn/https.js"></script>
