@@ -898,7 +898,7 @@ function logout(id) {
 	let data = {
 		action: "logout"
 	};
-
+	umami.track("Logout");
 	return api(data);
 }
 
@@ -1410,7 +1410,7 @@ function addRecord() {
 		prio: prio,
 		ttl: ttl
 	};
-
+	umami.track("Add Record");
 	return api(data);
 }
 
