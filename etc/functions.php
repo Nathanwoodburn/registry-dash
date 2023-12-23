@@ -129,13 +129,17 @@
 	}
 
 	function verifyTwoFactor($base32, $code) {
-		$secret = Base32::decode($base32);
-		$key = (new Totp())->GenerateToken($secret);
+	    $secret = Base32::decode($base32);
+	    $totp = new Totp();
 
-		if ($key == $code) {
-			return true;
-		}
-		return false;
+	    $currentKey = $totp->GenerateToken($secret);
+	    $previousKey = $totp->GenerateToken($secret, time() - 30);
+	    $nextKey = $totp->GenerateToken($secret, time() + 30);
+
+	    if ($code == $currentKey || $code == $previousKey || $code == $nextKey) {
+	        return true;
+	    }
+	    return false;
 	}
 
 	function userInfoByEmail($email) {
@@ -1051,5 +1055,26 @@
 
 	function logAction($action, $reason, $domain) {
 		sql("INSERT INTO `log` (domain, action, reason, time) VALUES (?,?,?,?)", [$domain, $action, $reason, time()]);
+	}
+
+	function apacheConfig($domain) {
+		$template = file_get_contents($GLOBALS["path"]."/etc/apache.template");
+
+		$variables = [
+			"domain" => $domain,
+			"tld" => tldForDomain($domain)
+		];
+
+		$config = replaceVariables($template, $variables);
+		return $config;
+	}
+
+	function tlsaForDomain($cert) {
+		$tlsa = trim(shell_exec('echo -n "3 1 1 " && openssl x509 -in '.$cert.' -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | xxd  -p -u -c 32'));
+		return $tlsa;
+	}
+
+	function luaAlias($subdomain) {
+		return 'A ";local r=resolve(\''.$subdomain.'.'.$GLOBALS["icannHostname"].'\', pdns.A) local t={} for _,v in ipairs(r) do table.insert(t, v:toString()) end return t"';
 	}
 ?>
