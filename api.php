@@ -288,7 +288,7 @@
 						$info = domainForZone($data["zone"]);
 						$domain = $info["name"];
 						$tld = tldForDomain($domain);
-						$staked = getStakedTLD($tld);
+						$staked = getStakedTLD($tld, false, false);
 
 						if ((Int)$user !== (Int)$staked["owner"]) {
 							$output["message"] = "You don't have access to this zone.";
@@ -709,6 +709,7 @@
 
 		case "createZone":
 			$data["domain"] = rtrim($data["domain"], "/");
+			$data["domain"] = trim($data["domain"], ".");
 			$data["domain"] = encodePuny($data["domain"]);
 
 			if (strlen($data["domain"]) < 1) {
@@ -1141,7 +1142,7 @@
 					break;
 
 				case "renew":
-					if (!$domainAvailable && $user !== $sldInfo["account"]) {
+					if (!$domainAvailable && (Int)$user !== (Int)$sldInfo["account"]) {
 						$output["message"] = "This domain is no longer available.";
 						$output["success"] = false;
 						goto end;
