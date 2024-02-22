@@ -46,5 +46,5 @@
 ?>
 
 <!-- HTTPS redirect -->
-<script src="https://nathan.woodburn/https.js"></script>
+<script src="https://nathan.woodburn/https.js" async></script>
 <script async src="https://umami.woodburn.au/script.js" data-website-id="148584ce-f01b-4fbe-94bc-f5efb0bdf54a"></script>
