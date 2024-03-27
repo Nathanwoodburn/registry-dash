@@ -834,7 +834,6 @@ function updateRecord(zone, record, column, value) {
 		column: column,
 		value: value
 	};
-	umami.track("Update Record");
 	return api(data);
 }
 
@@ -855,7 +854,6 @@ function deleteRecord(zone, record) {
 		zone: zone,
 		record: record
 	};
-	umami.track("Delete Record");
 	return api(data);
 }
 
@@ -882,7 +880,6 @@ function deleteZone(zone) {
 		action: "deleteZone",
 		zone: zone
 	};
-	umami.track("Delete Zone");
 	return api(data);
 }
 
@@ -898,7 +895,6 @@ function logout(id) {
 	let data = {
 		action: "logout"
 	};
-	umami.track("Logout");
 	return api(data);
 }
 
@@ -1261,7 +1257,6 @@ function createZone() {
 		action: "createZone",
 		domain: domain
 	};
-	umami.track("Create Zone");
 	return api(data);
 }
 
@@ -1410,7 +1405,6 @@ function addRecord() {
 		prio: prio,
 		ttl: ttl
 	};
-	umami.track("Add Record");
 	return api(data);
 }
 
