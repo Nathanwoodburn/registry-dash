@@ -1143,7 +1143,7 @@
 
 			$total = $price * $years;
 			$fee = $total * ($GLOBALS["sldFee"] / 100);
-			$isFreePurchase = ((float)$price === 0.0);
+			$isFreePurchase = (isset($price) && is_numeric($price) && (float)$price === 0.0);
 
 			if (!isset($price) || !$years || (strlen($domain) < 1) || nameIsInvalid($sld) || !in_array($type, $GLOBALS["purchaseTypes"])) {
 				$output["message"] = "Something went wrong. Try again?";
@@ -1213,7 +1213,7 @@
 				if ($isFreePurchase) {
 					$paid = true;
 				}
-				else if (!empty($GLOBALS["stripeEnabled"])) {
+				else if (isset($GLOBALS["stripeEnabled"]) && $GLOBALS["stripeEnabled"]) {
 						$customer = $GLOBALS["stripe"]->customers->retrieve($userInfo["stripe"]);
 						$paymentMethod = $customer["invoice_settings"]["default_payment_method"];
 
