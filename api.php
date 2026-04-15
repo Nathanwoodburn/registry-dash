@@ -1261,6 +1261,11 @@
 						case "renew":
 							renewSLD($sldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
 							break;
+
+						default:
+							$output["message"] = "Something went wrong. Try again?";
+							$output["success"] = false;
+							break;
 					}
 				}
 			}
