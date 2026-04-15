@@ -1143,7 +1143,7 @@
 
 			$total = $price * $years;
 			$fee = $total * ($GLOBALS["sldFee"] / 100);
-			$isFreePurchase = ((int)$price === 0);
+			$isFreePurchase = ((float)$price === 0.0);
 
 			if (!isset($price) || !$years || (strlen($domain) < 1) || nameIsInvalid($sld) || !in_array($type, $GLOBALS["purchaseTypes"])) {
 				$output["message"] = "Something went wrong. Try again?";
@@ -1209,9 +1209,11 @@
 				}
 			}
 			else {
-				if (!empty($GLOBALS["stripeEnabled"]) || $isFreePurchase) {
-					$paid = false;
-					if ($price > 0) {
+				$paid = false;
+				if ($isFreePurchase) {
+					$paid = true;
+				}
+				else if (!empty($GLOBALS["stripeEnabled"])) {
 						$customer = $GLOBALS["stripe"]->customers->retrieve($userInfo["stripe"]);
 						$paymentMethod = $customer["invoice_settings"]["default_payment_method"];
 
@@ -1244,26 +1246,22 @@
 						if ($output["success"]) {
 							$paid = true;
 						}
-					}
-					else {
-						$paid = true;
-					}
-
-					if ($paid) {
-						switch ($type) {
-							case "register":
-								registerSLD($tldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
-								break;
-
-							case "renew":
-								renewSLD($sldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
-								break;
-						}
-					}
 				}
 				else {
 					$output["message"] = "This payment method is currently disabled.";
 					$output["success"] = false;
+				}
+
+				if ($paid) {
+					switch ($type) {
+						case "register":
+							registerSLD($tldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
+							break;
+
+						case "renew":
+							renewSLD($sldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
+							break;
+					}
 				}
 			}
 			break;
