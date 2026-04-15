@@ -1143,6 +1143,7 @@
 
 			$total = $price * $years;
 			$fee = $total * ($GLOBALS["sldFee"] / 100);
+			$isFreePurchase = ((int)$price === 0);
 
 			if (!isset($price) || !$years || (strlen($domain) < 1) || nameIsInvalid($sld) || !in_array($type, $GLOBALS["purchaseTypes"])) {
 				$output["message"] = "Something went wrong. Try again?";
@@ -1186,7 +1187,7 @@
 						$output["success"] = false;
 					}
 				}
-				else {
+				else if ($isFreePurchase) {
 					switch ($type) {
 						case "register":
 							registerSLD($tldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
@@ -1202,9 +1203,13 @@
 							break;
 					}
 				}
+				else {
+					$output["message"] = "Something went wrong. Try again?";
+					$output["success"] = false;
+				}
 			}
 			else {
-				if (!empty($GLOBALS["stripeEnabled"]) || $price <= 0) {
+				if (!empty($GLOBALS["stripeEnabled"]) || $isFreePurchase) {
 					$paid = false;
 					if ($price > 0) {
 						$customer = $GLOBALS["stripe"]->customers->retrieve($userInfo["stripe"]);
