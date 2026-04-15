@@ -1195,11 +1195,16 @@
 						case "renew":
 							renewSLD($sldInfo, $domain, $user, $sld, $tld, $type, $expiration, $price, $total, $fee, $GLOBALS["siteName"]);
 							break;
+
+						default:
+							$output["message"] = "Something went wrong. Try again?";
+							$output["success"] = false;
+							break;
 					}
 				}
 			}
 			else {
-				if (@$GLOBALS["stripeEnabled"] || $price <= 0) {
+				if (!empty($GLOBALS["stripeEnabled"]) || $price <= 0) {
 					$paid = false;
 					if ($price > 0) {
 						$customer = $GLOBALS["stripe"]->customers->retrieve($userInfo["stripe"]);
