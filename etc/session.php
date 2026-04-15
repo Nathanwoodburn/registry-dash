@@ -93,6 +93,11 @@
 		die();
 	}
 
+	if (!empty($GLOBALS["disableSignups"]) && $page === "signup") {
+		header("Location: /login");
+		die();
+	}
+
 	if (isset($user) && in_array($page, ["login", "signup", "forgot", "reset"])) {
 		header("Location: /sites");
 		die();

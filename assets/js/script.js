@@ -2967,7 +2967,12 @@ function swapAccountAction(action) {
 			form.find(".link[data-action=accountAction]").data("page", "signup");
 			form.find(".link[data-action=accountAction]").attr("data-page", "signup");
 			form.find(".link[data-action=accountAction] span").html("signup");
-			form.find(".link[data-action=accountAction]").removeClass("hidden");
+			if (signupsDisabled) {
+				form.find(".link[data-action=accountAction]").addClass("hidden");
+			}
+			else {
+				form.find(".link[data-action=accountAction]").removeClass("hidden");
+			}
 			form.find(".link[data-action=accountActionAlt]").removeClass("hidden");
 			form.find("input[name=email]").removeClass("none");
 			form.find("input[name=password]").removeClass("none");

@@ -358,7 +358,7 @@
 			break;
 
 		case "signup":
-			if (@$signupsDisabled) {
+			if (!empty($GLOBALS["disableSignups"])) {
 				$output["success"] = false;
 				$output["message"] = "Signups are currently disabled.";
 			}

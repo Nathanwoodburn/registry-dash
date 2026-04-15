@@ -12,7 +12,9 @@
 			<input type="hidden" name="action" value="login">
 			<div class="submit" data-action="login">Login</div>
 			<div class="message">
+				<?php if (empty($GLOBALS["disableSignups"])) { ?>
 				<div class="link center" data-action="accountAction" data-page="signup">I need to <span>signup</span></div>
+				<?php } ?>
 				<div class="link center" data-action="accountActionAlt" data-page="forgot">I forgot my password</div>
 			</div>
 		</form>

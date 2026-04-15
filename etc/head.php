@@ -45,6 +45,7 @@
 		Stripe.setPublishableKey(stripeKey);
 	}
 	var discordLink = "<?php echo $GLOBALS["discordLink"]; ?>";
+	var signupsDisabled = <?php echo !empty($GLOBALS["disableSignups"]) ? 'true' : 'false'; ?>;
 </script>
 <?php
 	if (@$_COOKIE["admin"]) { ?>

@@ -23,6 +23,8 @@
 	$GLOBALS["tweetSales"] = false;
 	$GLOBALS["discordLink"] = "https://discord.gg/5KdtCVsGes";
 
+	$GLOBALS["disableSignups"] = false;
+
 	$GLOBALS["hsdKey"] = "keyhere";
 
 	$GLOBALS["pdnsApiHost"] = "your api server ip here";
