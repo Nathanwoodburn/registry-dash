@@ -22,3 +22,7 @@ favicon.ico
 
 etc/parking/ssl/*
 etc/parking/conf/*
+# AI Agent Temporary Files
+temp-specs/
+test_*.php
+check_janice.php
