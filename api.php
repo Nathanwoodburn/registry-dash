@@ -39,9 +39,15 @@
 	if (!$throughDashboard) {
 		switch ($data["action"]) {
 			/** {"description":"Gets a list of staked TLDs.","request":"{\"action\":\"getStaked\"}","response":"{\"success\":true,\"data\":[{\"tld\":\"fuckyou\"},{\"tld\":\"handygo\"},{\"tld\":\"handyhub\"},{\"tld\":\"mastermind\"},{\"tld\":\"tlds\"},{\"tld\":\"uniwallet\"},{\"tld\":\"xp\"}]}"} */
+			case "getstaked":
+			case "getStacked":
+			case "getstacked":
 			case "getStaked":
 
 			/** {"description":"Gets a list of the user's staked TLDs.","request":"{\"action\":\"getMyStaked\"}","response":"{\"success\":true,\"data\":[{\"tld\":\"fuckyou\",\"price\":500,\"live\":1,\"id\":\"9a2aea6830ba482187a3c209bda0169a\"},{\"tld\":\"tlds\",\"price\":499,\"live\":1,\"id\":\"9dd25bd215984cc3901bbbf7bfd27574\"},{\"tld\":\"xp\",\"price\":999,\"live\":1,\"id\":\"4826bd33beda481194ab89d2b5cea7f0\"}]}"} */
+			case "getmystaked":
+			case "getMyStacked":
+			case "getmystacked":
 			case "getMyStaked":
 
 			/** {"description":"Retrieves a list of all zones for the current user.","request":"{\"action\":\"getZones\"}","response":"{\"success\":true,\"data\":[{\"name\":\"hns.chat\",\"id\":\"c0d6cdf3abde4b02991f427d42906d95\"},{\"name\":\"hnschat\",\"id\":\"60733325d683468b98878819fb654b01\"},{\"name\":\"hnschatbot\",\"id\":\"b60b899f903b4d08b948f72144a31934\"},{\"name\":\"xn--os8h74e\",\"id\":\"df07f7afa18141b8ba126a37e6386fbc\"}]}"} */
@@ -151,7 +157,13 @@
 		case "appearance":
 		case "updateEmail":
 		case "regenerateKey":
+		case "getstaked":
+		case "getStacked":
+		case "getstacked":
 		case "getStaked":
+		case "getmystaked":
+		case "getMyStacked":
+		case "getmystacked":
 		case "getMyStaked":
 		case "getZone":
 		case "updateNS":
@@ -928,6 +940,9 @@
 			}
 			break;
 
+		case "getstaked":
+		case "getStacked":
+		case "getstacked":
 		case "getStaked":
 			$getStaked = getStaked();
 
@@ -938,6 +953,9 @@
 			}
 			break;
 
+		case "getmystaked":
+		case "getMyStacked":
+		case "getmystacked":
 		case "getMyStaked":
 			$getStaked = getMyStaked($user, true);
 

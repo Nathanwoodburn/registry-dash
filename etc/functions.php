@@ -182,6 +182,12 @@
 			return false;
 		}
 
+		// Also check if any records exist directly in the TLD zone for this domain or its subdomains
+		$checkRecords = sql("SELECT `name` FROM `".$GLOBALS["sqlDatabaseDNS"]."`.`records` WHERE `name` = ? OR `name` LIKE ? LIMIT 1", [$domain, "%.{$domain}"]);
+		if ($checkRecords) {
+			return false;
+		}
+
 		$checkInvoices = sql("SELECT * FROM `invoices` WHERE `domain` = ? AND (`expired` = 0 OR `paid` = 1)", [$domain]);
 		if ($checkInvoices) {
 			return false;
