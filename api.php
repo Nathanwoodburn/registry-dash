@@ -116,6 +116,9 @@
 			/** {"description":"Add reserved domains to a TLD.","request":"{\"action\":\"addReserved\",\"zone\":\"4826bd33beda481194ab89d2b5cea7f0\",\"domains\":[\"test\",\"test2\",\"-test3\"]}","response":"{\"success\":true,\"data\":{\"reserved\":[\"test2\"],\"invalid\":[\"-test3\"],\"unavailable\":[\"test\"]}}"} */
 			case "addReserved":
 
+			/** {"description":"Activates an owner-created reservation without a payment or sale.","request":"{\"action\":\"activateReserved\",\"zone\":\"ade97a05d3854ea2b37871a7431f7be2\",\"expiration\":2076278400,\"idempotency_key\":\"headlessdomains:first-party:claim:v1\"}","response":"{\"success\":true,\"data\":{\"domain\":\"nic.xp\",\"zone\":\"ade97a05d3854ea2b37871a7431f7be2\",\"expiration\":2076278400,\"state\":\"activated\",\"idempotent\":false,\"payment_created\":false,\"sale_created\":false,\"legacy_dns_imported\":false}}"} */
+			case "activateReserved":
+
 			/** {"description":"Deletes a reserved domain from a TLD.","request":"{\"action\":\"deleteReserved\",\"zone\":\"5f15a2dbb3c4445081d080d769a384df\"}","response":"{\"success\":true}"} */
 			case "deleteReserved":
 
@@ -178,6 +181,7 @@
 		case "getEarnings":
 		case "getReserved":
 		case "addReserved":
+		case "activateReserved":
 		case "deleteReserved":
 		case "transferDomain":
 		case "generate2fa":
@@ -1681,6 +1685,11 @@
 				"invalid" => $invalid,
 				"unavailable" => $unavailable
 			];
+			break;
+
+		case "activateReserved":
+			$request = normalizeActivateReservedRequest($data, $user);
+			$output = activateReservedDomain($request, $user);
 			break;
 
 		case "deleteReserved":
